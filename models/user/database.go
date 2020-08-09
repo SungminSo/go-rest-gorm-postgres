@@ -1,11 +1,10 @@
 package user
 
 import (
+	"../../internal/constant"
 	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
-	"github.com/SungminSo/go-rest-gorm-postgres/internal/constant"
-	"github.com/SungminSo/go-rest-gorm-postgres/models"
 	"log"
 )
 
@@ -34,7 +33,7 @@ func Open(config *Config) (*UserDatabase, error) {
 }
 
 func (schema *UserDatabase) Initialize() {
-	schema.table.AutoMigrate(&models.User{})
+	schema.table.AutoMigrate(&User{})
 }
 
 func (schema *UserDatabase) Close() error {
