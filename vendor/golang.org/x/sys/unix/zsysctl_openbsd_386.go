@@ -27,7 +27,7 @@ var sysctlMib = []mibentry{
 	{"hw.disknames", []_C_int{6, 8}},
 	{"hw.diskstats", []_C_int{6, 9}},
 	{"hw.machine", []_C_int{6, 1}},
-	{"hw.model", []_C_int{6, 2}},
+	{"hw.models", []_C_int{6, 2}},
 	{"hw.ncpu", []_C_int{6, 3}},
 	{"hw.ncpufound", []_C_int{6, 21}},
 	{"hw.pagesize", []_C_int{6, 7}},

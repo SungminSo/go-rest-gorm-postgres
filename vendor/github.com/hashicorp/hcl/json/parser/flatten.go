@@ -31,7 +31,7 @@ func flattenObjects(node ast.Node) {
 			}
 		}
 
-		// Reverse the list since the frontier model runs things backwards
+		// Reverse the list since the frontier models runs things backwards
 		for i := len(items)/2 - 1; i >= 0; i-- {
 			opp := len(items) - 1 - i
 			items[i], items[opp] = items[opp], items[i]
