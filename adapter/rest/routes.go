@@ -21,15 +21,19 @@ func (ps *ProjectService) registerRoutes() {
 	admins := ps.server.Group("/admins")
 	{
 		// 회원가입
-		admins.POST("/registration")
+		admins.POST("/registration", )
 		// 로그인
 		admins.POST("/login", )
-		// 사용자 목록 조회
-		admins.GET("/user", )
-		// 사용자 가입 관리 - 승인
-		admins.POST("/user", )
-		// 사용자 가입 관리 - 거절
-		admins.PATCH("/user", )
+
+		application := admins.Group("/application")
+		{
+			// 사용자 가입 목록 조회
+			application.GET("", )
+			// 사용자 가입 관리 - 승인
+			application.POST("", )
+			// 사용자 가입 관리 - 거절
+			application.PATCH("", )
+		}
 	}
 
 	users := ps.server.Group("/users")
