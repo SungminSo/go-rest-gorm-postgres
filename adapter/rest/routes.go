@@ -30,7 +30,7 @@ func (ps *ProjectService) registerRoutes() {
 			// 사용자 가입 목록 조회
 			management.GET("", ps.GetUserList)
 			// 사용자 가입 관리 - 승인
-			management.POST("", )
+			management.POST("", ps.ApproveRegistration)
 			// 사용자 가입 관리 - 거절
 			management.PATCH("", )
 		}

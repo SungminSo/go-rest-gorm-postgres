@@ -8,5 +8,6 @@ type User struct {
 	Name     string `json:"name" gorm:"column:name"`
 	Phone    string `json:"phone" gorm:"column:phone"`
 	Email    string `json:"email" gorm:"column:email"`
-	Password string `json:"password" gorm:"password"`
+	Password string `json:"password" gorm:"column:password"`
+	Status   string `json:"status" gorm:"column:status"`
 }

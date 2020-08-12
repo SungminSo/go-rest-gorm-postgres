@@ -82,3 +82,22 @@ func (app *ProjectApp) GetUserList(page string) (int, []*users.User, error) {
 
 	return len(userList), userList[fromIndex:toIndex], nil
 }
+
+func (app *ProjectApp) ApproveRegistration(userUUID string) (string, string, error) {
+	user, err := app.users.Find(userUUID)
+	if err != nil {
+		return "", "", err
+	}
+
+	if user.Status != constant.APPLIED {
+		return "", user.Status, errors.New("invalid status change request")
+	}
+
+	user.Status = constant.APPROVED
+	err = app.users.Save(user)
+	if err != nil {
+		return "","", err
+	}
+
+	return user.UUID, user.Status, nil
+}
