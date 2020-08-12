@@ -28,7 +28,7 @@ func (ps *ProjectService) registerRoutes() {
 		management := admins.Group("/management")
 		{
 			// 사용자 가입 목록 조회
-			management.GET("", )
+			management.GET("", ps.GetUserList)
 			// 사용자 가입 관리 - 승인
 			management.POST("", )
 			// 사용자 가입 관리 - 거절

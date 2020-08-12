@@ -1,8 +1,10 @@
 package rest
 
 import (
+	"../../internal/constant"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 func (ps *ProjectService) Register(c *gin.Context) {
@@ -67,4 +69,28 @@ func (ps *ProjectService) Login(c *gin.Context) {
 		"accessToken": accessToken,
 	})
 	return
+}
+
+func (ps *ProjectService) GetUserList(c *gin.Context) {
+	page := c.Param("page")
+
+	totalNum, users, err := ps.app.GetUserList(page)
+	if err != nil {
+		if strings.Contains(err.Error(), constant.NotFoundStr) {
+			c.JSON(http.StatusNotFound, gin.H{
+				"message": err.Error(),
+			})
+			return
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"totalNum": totalNum,
+		"users": users,
+	})
 }
