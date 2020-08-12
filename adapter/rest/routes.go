@@ -23,7 +23,7 @@ func (ps *ProjectService) registerRoutes() {
 		// 회원가입
 		admins.POST("/register", ps.Register)
 		// 로그인
-		admins.POST("/login", )
+		admins.POST("/login", ps.Login)
 
 		application := admins.Group("/application")
 		{
