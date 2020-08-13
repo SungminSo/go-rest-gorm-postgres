@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-func (ps *ProjectService) Register(c *gin.Context) {
+func (ps *ProjectService) AdminRegister(c *gin.Context) {
 	type req struct {
 		AdminID  string `json:"adminID" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
 
-	reqBody := req{}
+	reqBody := &req{}
 	err := c.ShouldBindJSON(reqBody)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -22,7 +22,7 @@ func (ps *ProjectService) Register(c *gin.Context) {
 		return
 	}
 
-	adminUUID, err := ps.app.Register(reqBody.AdminID, reqBody.Password)
+	adminUUID, err := ps.app.AdminRegister(reqBody.AdminID, reqBody.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),

@@ -7,17 +7,16 @@ import (
 	"../models/users"
 	"errors"
 	"github.com/google/uuid"
-	"github.com/spf13/cast"
 	"golang.org/x/crypto/bcrypt"
 	"strconv"
 	"strings"
 )
 
-func (app *ProjectApp) Register(adminID, password string) (string, error) {
+func (app *ProjectApp) AdminRegister(adminID, password string) (string, error) {
 	_, err := app.admins.FindByID(adminID)
 	if err == nil {
 		return "", nil
-	} else if !strings.Contains(err.Error(), constant.NotFouncStr) {
+	} else if !strings.Contains(err.Error(), constant.NotFoundStr) {
 		return "", err
 	}
 

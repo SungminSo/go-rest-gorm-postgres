@@ -20,6 +20,19 @@ func (schema *UserDatabase) Find(uuid string) (*User, error) {
 	return user, nil
 }
 
+func (schema *UserDatabase) FindByPhone(phone string) (*User, error) {
+	user := &User{}
+	err := schema.table.First(user, "phone=?", phone).Error
+	if err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			return nil, errors.New(fmt.Sprintf(constant.NotFoundError, "users", uuid))
+		}
+		return nil, errors.New(fmt.Sprintf(constant.FindingError, "users", uuid))
+	}
+
+	return user, nil
+}
+
 func (schema *UserDatabase) All() ([]*User, error) {
 	var users []*User
 	err := schema.table.Find(users).Error

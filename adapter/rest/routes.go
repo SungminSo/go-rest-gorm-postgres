@@ -21,7 +21,7 @@ func (ps *ProjectService) registerRoutes() {
 	admins := ps.server.Group("/admins")
 	{
 		// 회원가입
-		admins.POST("/register", ps.Register)
+		admins.POST("/register", ps.AdminRegister)
 		// 로그인
 		admins.POST("/login", ps.Login)
 
@@ -40,7 +40,7 @@ func (ps *ProjectService) registerRoutes() {
 	users := ps.server.Group("/users")
 	{
 		// 회원가입
-		users.POST("/register", )
+		users.POST("/register", ps.UserRegister)
 		// 로그인
 		users.POST("/sign-in", )
 		// 사용자 정보 조회
