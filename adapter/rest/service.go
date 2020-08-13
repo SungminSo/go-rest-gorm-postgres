@@ -45,7 +45,7 @@ func (ps *ProjectService) Initialize(config *Config) {
 		AllowCredentials: true,
 	}
 
-	ps.server.Use(gin.Logger(), gin.Recovery(), cors.New(c))
+	ps.server.Use(gin.Logger(), gin.Recovery(), cors.New(c), ps.app.CORSMiddleware)
 	ps.registerRoutes()
 }
 
