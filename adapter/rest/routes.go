@@ -26,6 +26,7 @@ func (ps *ProjectService) registerRoutes() {
 		admins.POST("/login", ps.Login)
 
 		management := admins.Group("/management")
+		management.Use(ps.app.AdminMiddleware)
 		{
 			// 사용자 가입 목록 조회
 			management.GET("", ps.GetUserList)
