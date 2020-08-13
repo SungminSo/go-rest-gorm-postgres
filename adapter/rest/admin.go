@@ -135,3 +135,44 @@ func (ps *ProjectService) ApproveRegistration(c *gin.Context) {
 	})
 	return
 }
+
+func (ps *ProjectService) RejectRegistration(c *gin.Context) {
+	type req struct {
+		UserUUID string `json:"userUUID" binding:"required"`
+	}
+
+	reqBody := &req{}
+	err := c.ShouldBindJSON(reqBody)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	userUUID, userStatus, err := ps.app.RejectRegistration(reqBody.UserUUID)
+	if err != nil {
+		if strings.Contains(err.Error(), constant.BadRequestStr) {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+			})
+			return
+		} else if strings.Contains(err.Error(), constant.NotFoundStr) {
+			c.JSON(http.StatusNotFound, gin.H{
+				"message": err.Error(),
+			})
+			return
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"userUUID":   userUUID,
+		"userStatus": userStatus,
+	})
+	return
+}

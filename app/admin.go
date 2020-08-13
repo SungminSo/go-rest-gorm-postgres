@@ -101,3 +101,22 @@ func (app *ProjectApp) ApproveRegistration(userUUID string) (string, string, err
 
 	return user.UUID, user.Status, nil
 }
+
+func (app *ProjectApp) RejectRegistration(userUUID string) (string, string, error) {
+	user, err := app.users.Find(userUUID)
+	if err != nil {
+		return "", "", err
+	}
+
+	if user.Status != constant.APPLIED {
+		return "", user.Status, errors.New("invalid status change request")
+	}
+
+	user.Status = constant.REJECTED
+	err = app.users.Save(user)
+	if err != nil {
+		return "","", err
+	}
+
+	return user.UUID, user.Status, nil
+}
