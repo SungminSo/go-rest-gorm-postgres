@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"../../internal/constant"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -67,6 +68,29 @@ func (ps *ProjectService) SignIn(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"accessToken": accessToken,
+	})
+	return
+}
+
+func (ps *ProjectService) GetUserInfo(c *gin.Context) {
+	userUUID, exists := c.Get("userUUID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": constant.InvalidAccessTokenError,
+		})
+		return
+	}
+
+	user, err := ps.app.GetUserInfo(userUUID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"user": user,
 	})
 	return
 }

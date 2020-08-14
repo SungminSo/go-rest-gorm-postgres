@@ -61,3 +61,12 @@ func (app *ProjectApp) SignIn(phone, password string) (string, error) {
 
 	return accessToken, nil
 }
+
+func (app *ProjectApp) GetUserInfo(userUUID string) (*users.User, error) {
+	user, err := app.users.Find(userUUID)
+	if err != nil {
+		return &users.User{}, err
+	}
+
+	return user, nil
+}
