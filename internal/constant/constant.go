@@ -8,6 +8,8 @@ const (
 	APPROVED = "approved"
 	REJECTED = "rejected"
 
-	NotFoundStr   = "not found"
-	BadRequestStr = "invalid"
+	NotFoundStr     = "not found"
+	BadRequestStr   = "invalid"
+	UnauthorizedStr = "unauthorized"
+	ConflictedStr   = "already"
 )
