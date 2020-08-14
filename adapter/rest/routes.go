@@ -43,9 +43,14 @@ func (ps *ProjectService) registerRoutes() {
 		users.POST("/register", ps.UserRegister)
 		// 로그인
 		users.POST("/sign-in", ps.SignIn)
-		// 사용자 정보 조회
-		users.GET("/info", ps.GetUserInfo)
-		// 사용자 정보 수정
-		users.PATCH("/info", )
+
+		info := users.Group("/info")
+		info.Use(ps.app.UserMiddleware)
+		{
+			// 사용자 정보 조회
+			info.GET("", ps.GetUserInfo)
+			// 사용자 정보 수정
+			info.PATCH("", )
+		}
 	}
 }
