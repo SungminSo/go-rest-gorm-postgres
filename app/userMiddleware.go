@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func (app *ProjectApp) AdminMiddleware(c *gin.Context) {
+func (app *ProjectApp) UserMiddleware(c *gin.Context) {
 	authorization := c.GetHeader("Authorization")
 	splitedToken := strings.Split(authorization, "Bearer ")
 	if len(splitedToken) != 2 {
@@ -19,10 +19,10 @@ func (app *ProjectApp) AdminMiddleware(c *gin.Context) {
 		return
 	}
 
-	accessToken := strings.TrimSpace(splitedToken[1])
+	accesToken := strings.TrimSpace(splitedToken[1])
 
 	// Parse the token
-	adminToken, err := jwt.ParseWithClaims(accessToken, &token.AdminTokenClaim{}, func(adminToken *jwt.Token) (interface{}, error) {
+	userToken, err := jwt.ParseWithClaims(accesToken, &token.UserTokenClaim{}, func(userToken *jwt.Token) (interface{},error) {
 		return []byte(token.SignKey), nil
 	})
 	if err != nil {
@@ -32,16 +32,16 @@ func (app *ProjectApp) AdminMiddleware(c *gin.Context) {
 		return
 	}
 
-	claims, ok := adminToken.Claims.(*token.AdminTokenClaim)
-	if !ok || !adminToken.Valid {
+	claims, ok := userToken.Claims.(*token.UserTokenClaim)
+	if !ok || !userToken.Valid {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": constant.InValidJWTError,
 		})
 		return
 	}
 
-	adminUUID := claims.UUID
-	_, err = app.admins.Find(adminUUID)
+	userUUID := claims.UUID
+	_, err = app.users.Find(userUUID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": err.Error(),
@@ -49,6 +49,6 @@ func (app *ProjectApp) AdminMiddleware(c *gin.Context) {
 		return
 	}
 
-	c.Set("adminUUID", adminUUID)
+	c.Set("userUUID", userUUID)
 	c.Next()
 }
