@@ -50,7 +50,7 @@ func (ps *ProjectService) registerRoutes() {
 			// 사용자 정보 조회
 			info.GET("", ps.GetUserInfo)
 			// 사용자 정보 수정
-			info.PATCH("", )
+			info.PATCH("", ps.PatchUserInfo)
 		}
 	}
 }

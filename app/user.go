@@ -70,3 +70,27 @@ func (app *ProjectApp) GetUserInfo(userUUID string) (*users.User, error) {
 
 	return user, nil
 }
+
+func (app *ProjectApp) PatchUserInfo(userUUID, name, phone, email string) (*users.User, error) {
+	user, err := app.users.Find(userUUID)
+	if err != nil {
+		return &users.User{}, err
+	}
+
+	if len(name) != 0 && user.Name != name {
+		user.Name = name
+	}
+	if len(phone) != 0 && user.Phone != phone {
+		user.Phone = phone
+	}
+	if len(email) != 0 && user.Email != email {
+		user.Email = email
+	}
+
+	err = app.users.Save(user)
+	if err != nil {
+		return &users.User{}, err
+	}
+
+	return user, nil
+}

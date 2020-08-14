@@ -94,3 +94,41 @@ func (ps *ProjectService) GetUserInfo(c *gin.Context) {
 	})
 	return
 }
+
+func (ps *ProjectService) PatchUserInfo(c *gin.Context) {
+	userUUID, exists := c.Get("userUUID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": constant.InvalidAccessTokenError,
+		})
+		return
+	}
+
+	type req struct {
+		Name  string `json:"name"`
+		Phone string `json:"phone"`
+		Email string `json:"email"`
+	}
+
+	reqBody := &req{}
+	err := c.ShouldBindJSON(reqBody)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	user, err := ps.app.PatchUserInfo(userUUID.(string), reqBody.Name, reqBody.Phone, reqBody.Email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"user": user,
+	})
+	return
+}
