@@ -2,6 +2,7 @@ package rest
 
 import (
 	"../../internal/constant"
+	"../../internal/handler"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -24,15 +25,7 @@ func (ps *ProjectService) AdminRegister(c *gin.Context) {
 
 	adminUUID, err := ps.app.AdminRegister(reqBody.AdminID, reqBody.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
-	if len(adminUUID) == 0 {
-		c.JSON(http.StatusConflict, gin.H{
-			"message": "ID already exists",
-		})
+		handler.ErrorHandler(c, err)
 		return
 	}
 
@@ -59,9 +52,7 @@ func (ps *ProjectService) Login(c *gin.Context) {
 
 	accessToken, err := ps.app.Login(reqBody.AdminID, reqBody.password)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": err.Error(),
-		})
+		handler.ErrorHandler(c, err)
 		return
 	}
 
@@ -76,17 +67,8 @@ func (ps *ProjectService) GetUserList(c *gin.Context) {
 
 	totalNum, users, err := ps.app.GetUserList(page)
 	if err != nil {
-		if strings.Contains(err.Error(), constant.NotFoundStr) {
-			c.JSON(http.StatusNotFound, gin.H{
-				"message": err.Error(),
-			})
-			return
-		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
+		handler.ErrorHandler(c, err)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -111,22 +93,8 @@ func (ps *ProjectService) ApproveRegistration(c *gin.Context) {
 
 	userUUID, userStatus, err := ps.app.ApproveRegistration(reqBody.UserUUID)
 	if err != nil {
-		if strings.Contains(err.Error(), constant.BadRequestStr) {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
-			return
-		} else if strings.Contains(err.Error(), constant.NotFoundStr){
-			c.JSON(http.StatusNotFound, gin.H{
-				"message": err.Error(),
-			})
-			return
-		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
+		handler.ErrorHandler(c, err)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -152,22 +120,8 @@ func (ps *ProjectService) RejectRegistration(c *gin.Context) {
 
 	userUUID, userStatus, err := ps.app.RejectRegistration(reqBody.UserUUID)
 	if err != nil {
-		if strings.Contains(err.Error(), constant.BadRequestStr) {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
-			return
-		} else if strings.Contains(err.Error(), constant.NotFoundStr) {
-			c.JSON(http.StatusNotFound, gin.H{
-				"message": err.Error(),
-			})
-			return
-		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
+		handler.ErrorHandler(c, err)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{

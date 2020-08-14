@@ -15,7 +15,7 @@ import (
 func (app *ProjectApp) AdminRegister(adminID, password string) (string, error) {
 	_, err := app.admins.FindByID(adminID)
 	if err == nil {
-		return "", nil
+		return "", errors.New("ID already exists")
 	} else if !strings.Contains(err.Error(), constant.NotFoundStr) {
 		return "", err
 	}
@@ -44,12 +44,12 @@ func (app *ProjectApp) AdminRegister(adminID, password string) (string, error) {
 func (app *ProjectApp) Login(adminID, password string) (string, error) {
 	admin, err := app.admins.FindByID(adminID)
 	if err != nil {
-		return "", err
+		return "", errors.New("unauthorized." + err.Error())
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(password))
 	if err != nil {
-		return "", err
+		return "", errors.New("unauthorized." + err.Error())
 	}
 
 	accessToken := token.GenerateAdminAccessToken(admin.UUID, admin.AdminID)
