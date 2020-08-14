@@ -52,7 +52,7 @@ func (app *ProjectApp) Login(adminID, password string) (string, error) {
 		return "", err
 	}
 
-	accessToken := token.GenerateAccessToken(admin.UUID, admin.AdminID)
+	accessToken := token.GenerateAdminAccessToken(admin.UUID, admin.AdminID)
 
 	return accessToken, nil
 }

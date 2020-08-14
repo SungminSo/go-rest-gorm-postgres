@@ -41,3 +41,32 @@ func (ps *ProjectService) UserRegister(c *gin.Context) {
 	})
 	return
 }
+
+func (ps *ProjectService) SignIn(c *gin.Context) {
+	type req struct {
+		Phone    string `json:"phone" binding:"required"`
+		Password string `json:"password" biniding:"required"`
+	}
+
+	reqBody := &req{}
+	err := c.ShouldBindJSON(reqBody)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	accessToken, err := ps.app.SignIn(reqBody.Phone, reqBody.Password)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"accessToken": accessToken,
+	})
+	return
+}

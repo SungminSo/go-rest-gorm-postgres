@@ -42,7 +42,7 @@ func (ps *ProjectService) registerRoutes() {
 		// 회원가입
 		users.POST("/register", ps.UserRegister)
 		// 로그인
-		users.POST("/sign-in", )
+		users.POST("/sign-in", ps.SignIn)
 		// 사용자 정보 조회
 		users.GET("/info", )
 		// 사용자 정보 수정

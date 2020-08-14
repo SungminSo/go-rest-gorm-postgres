@@ -2,7 +2,9 @@ package app
 
 import (
 	"../internal/constant"
+	"../internal/token"
 	"../models/users"
+	"errors"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"strings"
@@ -38,4 +40,24 @@ func (app *ProjectApp) UserRegister(name, phone, email, password string) (string
 	}
 
 	return user.UUID, nil
+}
+
+func (app *ProjectApp) SignIn(phone, password string) (string, error) {
+	user, err := app.users.FindByPhone(phone)
+	if err != nil {
+		return "", err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		return "", err
+	}
+
+	if user.Status != constant.APPROVED {
+		return "", errors.New("unauthorized. not approved yet")
+	}
+
+	accessToken := token.GenerateUserAccessToken(user.UUID, user.Name, user.Phone)
+
+	return accessToken, nil
 }

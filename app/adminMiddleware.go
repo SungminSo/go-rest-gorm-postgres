@@ -21,7 +21,7 @@ func (app *ProjectApp) AdminMiddleware(c *gin.Context) {
 
 	accessToken := strings.TrimSpace(splitedToken[1])
 	// Parse the token
-	adminToken, err := jwt.ParseWithClaims(accessToken, &token.TokenClaim{}, func(adminToken *jwt.Token) (interface{}, error) {
+	adminToken, err := jwt.ParseWithClaims(accessToken, &token.AdminTokenClaim{}, func(adminToken *jwt.Token) (interface{}, error) {
 		return []byte(token.SignKey), nil
 	})
 	if err != nil {
@@ -31,7 +31,7 @@ func (app *ProjectApp) AdminMiddleware(c *gin.Context) {
 		return
 	}
 
-	claims, ok := adminToken.Claims.(*token.TokenClaim)
+	claims, ok := adminToken.Claims.(*token.AdminTokenClaim)
 	if !ok || !adminToken.Valid {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": constant.InValidJWTError + "\n" + err.Error(),
