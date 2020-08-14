@@ -13,7 +13,7 @@ import (
 func (app *ProjectApp) UserRegister(name, phone, email, password string) (string, error) {
 	_, err := app.users.FindByPhone(phone)
 	if err == nil {
-		return "", nil
+		return "", errors.New("phone already exists")
 	} else if !strings.Contains(err.Error(), constant.NotFoundStr) {
 		return "", err
 	}
@@ -45,12 +45,12 @@ func (app *ProjectApp) UserRegister(name, phone, email, password string) (string
 func (app *ProjectApp) SignIn(phone, password string) (string, error) {
 	user, err := app.users.FindByPhone(phone)
 	if err != nil {
-		return "", err
+		return "", errors.New("unauthorized." + err.Error())
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		return "", err
+		return "", errors.New("unauthorized." + err.Error())
 	}
 
 	if user.Status != constant.APPROVED {

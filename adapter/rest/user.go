@@ -2,6 +2,7 @@ package rest
 
 import (
 	"../../internal/constant"
+	"../../internal/handler"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -25,15 +26,7 @@ func (ps *ProjectService) UserRegister(c *gin.Context) {
 
 	userUUID, err := ps.app.UserRegister(reqBody.Name, reqBody.Phone, reqBody.Email, reqBody.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
-	if len(userUUID) == 0 {
-		c.JSON(http.StatusConflict, gin.H{
-			"message": "user already exists",
-		})
+		handler.ErrorHandler(c, err)
 		return
 	}
 
@@ -60,9 +53,7 @@ func (ps *ProjectService) SignIn(c *gin.Context) {
 
 	accessToken, err := ps.app.SignIn(reqBody.Phone, reqBody.Password)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": err.Error(),
-		})
+		handler.ErrorHandler(c, err)
 		return
 	}
 
@@ -83,9 +74,7 @@ func (ps *ProjectService) GetUserInfo(c *gin.Context) {
 
 	user, err := ps.app.GetUserInfo(userUUID.(string))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		handler.ErrorHandler(c, err)
 		return
 	}
 
@@ -121,9 +110,7 @@ func (ps *ProjectService) PatchUserInfo(c *gin.Context) {
 
 	user, err := ps.app.PatchUserInfo(userUUID.(string), reqBody.Name, reqBody.Phone, reqBody.Email)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		handler.ErrorHandler(c, err)
 		return
 	}
 
