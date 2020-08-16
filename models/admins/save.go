@@ -1,7 +1,7 @@
 package admins
 
 import (
-	"../../internal/constant"
+	"../internal/constant"
 	"errors"
 	"fmt"
 )

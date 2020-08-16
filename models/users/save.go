@@ -1,7 +1,7 @@
 package users
 
 import (
-	"../../internal/constant"
+	"../internal/constant"
 	"errors"
 	"fmt"
 )

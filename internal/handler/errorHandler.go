@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"../constant"
+	"../internal/constant"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
