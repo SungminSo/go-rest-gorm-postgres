@@ -34,3 +34,12 @@
 |ALLOW_ORIGINS    |http://localhost:3000 |
 |ALLOW_HEADERS    |Origin,Authorization,Content-Type,Content-Length|
 |ALLOW_METHODS    |GET,POST,PATCH,OPTIONS|
+
+## API
+- Notes: <a href="./API.md">API 문서</a>
+
+## How to run
+- local
+    1. git clone https://github.com/SungminSo/go-rest-gorm-postgres.git
+    1. ``` cd cmd/project ```
+    1. ``` go run main.go ```
