@@ -1,7 +1,7 @@
 package users
 
 import (
-	"../../internal/constant"
+	"../internal/constant"
 	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
@@ -25,9 +25,9 @@ func (schema *UserDatabase) FindByPhone(phone string) (*User, error) {
 	err := schema.table.First(user, "phone=?", phone).Error
 	if err != nil {
 		if gorm.IsRecordNotFoundError(err) {
-			return nil, errors.New(fmt.Sprintf(constant.NotFoundError, "users", uuid))
+			return nil, errors.New(fmt.Sprintf(constant.NotFoundError, "users", phone))
 		}
-		return nil, errors.New(fmt.Sprintf(constant.FindingError, "users", uuid))
+		return nil, errors.New(fmt.Sprintf(constant.FindingError, "users", phone))
 	}
 
 	return user, nil

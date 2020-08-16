@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"../../app"
+	"../app"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"os"

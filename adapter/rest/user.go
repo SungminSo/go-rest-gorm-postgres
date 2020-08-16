@@ -1,8 +1,8 @@
 package rest
 
 import (
-	"../../internal/constant"
-	"../../internal/handler"
+	"../internal/constant"
+	"../internal/handler"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

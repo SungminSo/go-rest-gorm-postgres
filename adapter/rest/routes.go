@@ -29,7 +29,7 @@ func (ps *ProjectService) registerRoutes() {
 		management.Use(ps.app.AdminMiddleware)
 		{
 			// 사용자 가입 목록 조회
-			management.GET("", ps.GetUserList)
+			management.GET("/:page", ps.GetUserList)
 			// 사용자 가입 관리 - 승인
 			management.POST("", ps.ApproveRegistration)
 			// 사용자 가입 관리 - 거절

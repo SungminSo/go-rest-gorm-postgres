@@ -1,9 +1,9 @@
 package main
 
 import (
-	"../../adapter/rest"
-	"../../app"
-	"../../models/dbs"
+	"../adapter/rest"
+	"../app"
+	"../models/dbs"
 	"github.com/spf13/viper"
 	"log"
 )

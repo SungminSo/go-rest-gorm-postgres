@@ -1,11 +1,9 @@
 package rest
 
 import (
-	"../../internal/constant"
-	"../../internal/handler"
+	"../internal/handler"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strings"
 )
 
 func (ps *ProjectService) AdminRegister(c *gin.Context) {
@@ -38,7 +36,7 @@ func (ps *ProjectService) AdminRegister(c *gin.Context) {
 func (ps *ProjectService) Login(c *gin.Context) {
 	type req struct {
 		AdminID  string `json:"adminID" binding:"required"`
-		password string `json:"password" binding:"reuiqred"`
+		Password string `json:"password" binding:"required"`
 	}
 
 	reqBody := &req{}
@@ -50,7 +48,7 @@ func (ps *ProjectService) Login(c *gin.Context) {
 		return
 	}
 
-	accessToken, err := ps.app.Login(reqBody.AdminID, reqBody.password)
+	accessToken, err := ps.app.Login(reqBody.AdminID, reqBody.Password)
 	if err != nil {
 		handler.ErrorHandler(c, err)
 		return
